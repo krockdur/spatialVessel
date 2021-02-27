@@ -10,20 +10,40 @@ Enemies.list = {}
 -- t => temps en seconde avant l'apparition de la vague
 Enemies.pattern = {
   {
+    n=1,
+    t=0.4
+  },
+  {
+    n=2,
+    t=0.4
+  },
+  {
+    n=3,
+    t=0.4
+  },
+  {
+    n=4,
+    t=0.4
+  },
+  {
+    n=5,
+    t=0.4
+  },
+  {
     n=3,
     t=3
   },
   {
     n=2,
-    t=15
+    t=5
   },
   {
-    n=2,
-    t=15
+    n=4,
+    t=5
   },
   {
-    n=2,
-    t=15
+    n=5,
+    t=5
   }
 }
 
@@ -47,6 +67,9 @@ function Enemies.draw()
   if #Enemies.list > 0 then
     for i, e in pairs(Enemies.list) do
       love.graphics.draw(sprite_enemy_1, e.x, e.y)
+      if debug == true then
+        love.graphics.rectangle("line", e.x, e.y, 64, 64)
+      end
     end
   end
 
@@ -69,23 +92,31 @@ function Enemies.update(dt)
   timer_vague = timer_vague + dt
   print(tostring(timer_vague))
 
+  --
   if timer_vague >= delta_time then
 
-    delta_time = Enemies.pattern[indice_vague].t
-    timer_vague = 0
-    math.randomseed(os.time())
-    for i = 1, Enemies.pattern[indice_vague].n do
+    local nb_enemies = Enemies.pattern[indice_vague].n
+
+    -- calcul écart des énemies
+    local nb_ecarts = nb_enemies + 1
+    local ecart_pixel = (love.graphics.getWidth() - (nb_enemies * 64)) / nb_ecarts
+
+    -- creation des enemies
+    for i = 1, nb_enemies do
       
       table.insert(Enemies.list, {
 
-        x = math.random(200, 800),
+        x = ecart_pixel * i + (i -1) * 64,
         y = -64,
-        speed = 0.5
+        speed = 0.2
 
       })
+
     end
 
     indice_vague = indice_vague + 1
+    delta_time = Enemies.pattern[indice_vague].t
+    timer_vague = 0
     if indice_vague > #Enemies.pattern then
       indice_vague = 1
     end

@@ -6,16 +6,15 @@ Player.y = 500
 Player.w = 64
 Player.h = 64
 
-Player.interval_shoot = 0.1 --0.5 secondes
+Player.tab_bullets = {}
+
+Player.interval_shoot = 0.005 --0.5 secondes
 
 --assets
 local sprite_player 
 local sprite_bullet_1
 local sound_shoot_1
 
-
-local tab_bullets = {}
-local debug = true
 
 ---------------------------------------------------
 
@@ -29,7 +28,7 @@ end
 
 function Player.shoot()
   sound_shoot_1:play()
-  table.insert(tab_bullets, {
+  table.insert(Player.tab_bullets, {
 
       x = Player.x+16,
       y = Player.y,
@@ -47,10 +46,12 @@ function Player.draw()
   love.graphics.draw(sprite_player, Player.x, Player.y)
 
 
-  for i,b in pairs(tab_bullets) do
+  for i,b in pairs(Player.tab_bullets) do
 
     love.graphics.draw(sprite_bullet_1, b.x, b.y)
-
+    if debug == true then
+      love.graphics.rectangle("line", b.x, b.y, 64, 64)
+    end
   end
 
 
@@ -77,11 +78,11 @@ function Player.update(dt)
   ------------- FIN FPS
 
   -- bullets
-  for i,b in pairs(tab_bullets) do
+  for i,b in pairs(Player.tab_bullets) do
 
     -- si la bullet sort de l'écran
-    if b.y < 100 then
-      table.remove(tab_bullets, i)
+    if b.y < -64 then
+      table.remove(Player.tab_bullets, i)
     end
 
     b.y = b.y - b.speed
