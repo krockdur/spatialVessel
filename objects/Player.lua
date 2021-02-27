@@ -9,7 +9,7 @@ Player.h = 64
 Player.interval_shoot = 0.1 --0.5 secondes
 
 --assets
-local sprite_player
+local sprite_player 
 local sprite_bullet_1
 local sound_shoot_1
 
