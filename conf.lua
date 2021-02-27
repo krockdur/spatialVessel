@@ -22,11 +22,10 @@ if arg[#arg] == "-debug" then require("mobdebug").start() end -- debug pas à pa
 
 function love.conf(t)
   
-  t.window.width = 800
-  t.window.height = 600
+  t.window.width = 1024
+  t.window.height = 768
   t.window.highdpi = false
-  t.window.fullscreen = true         -- Enable fullscreen (boolean)
-  t.window.fullscreentype = "exclusive" -- Choose between "desktop" fullscreen or "exclusive" fullscreen mode (string)
+  t.window.fullscreen = false         -- Enable fullscreen (boolean)
     
   t.window.title = "Spatial Vessel"
   

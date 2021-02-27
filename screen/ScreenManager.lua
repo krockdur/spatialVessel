@@ -53,8 +53,7 @@ function ScreenManager.update(dt)
   end
 
   if ScreenManager.screen == "game" then
-    game.update(dt)
-      
+    game.update(dt)      
   end
 
   if ScreenManager.screen == "score" then
@@ -68,13 +67,16 @@ function ScreenManager.update(dt)
   if ScreenManager.screen == "options" then
     options.update(dt)
   end
-  
+
 
 
 end
 
 
 function ScreenManager.mousepressed(x, y, button, istouch)
+  if ScreenManager.screen == "game" then
+    game.mousepressed(x, y, button, istouch) 
+  end
 end
 
 function ScreenManager.mousereleased(x, y, button, istouch)
@@ -87,7 +89,9 @@ function ScreenManager.keyreleased(key)
 end
 
 function ScreenManager.mousemoved(x, y, dx, dy, istouch)
-
+  if ScreenManager.screen == "game" then
+    game.mousemoved(x, y, dx, dy, istouch)      
+  end
 end
 
 
