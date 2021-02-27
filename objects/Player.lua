@@ -109,7 +109,7 @@ end
 
 ---------------------------------------------------
 
-function mousepressed(x, y, button, istouch)
+function Player.mousepressed(x, y, button, istouch)
 
 end
 

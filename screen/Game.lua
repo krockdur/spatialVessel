@@ -1,5 +1,6 @@
 
 local player = require("objects.Player")
+local enemies = require("objects.Enemies")
 
 local Game = {}
 
@@ -9,6 +10,7 @@ local Game = {}
 function Game.load()
 
   player.load()
+  enemies.load()
 
 end
 
@@ -17,7 +19,7 @@ end
 
 function Game.draw()
   player.draw()
-  
+  enemies.draw()
   
 end
 
@@ -28,6 +30,7 @@ end
 function Game.update(dt)
 
   player.update(dt)
+  enemies.update(dt)
   
 end
 
