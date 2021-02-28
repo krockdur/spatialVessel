@@ -88,14 +88,11 @@ function Enemies.update(dt)
 
 
   -- évolution des ennemies
-
-  timer_evolution_enemies = timer_evolution_enemies + dt
-  if timer_evolution_enemies >= 0.00005 then
-    for i, e in pairs(Enemies.list) do
-      e.y = e.y + e.speed
-    end
-    timer_evolution_enemies = 0
+  for i, e in pairs(Enemies.list) do
+    e.y = e.y + e.speed * dt
   end
+
+
 
   -- apparition des ennemies
   timer_vague = timer_vague + dt
@@ -117,7 +114,7 @@ function Enemies.update(dt)
 
         x = ecart_pixel * i + (i -1) * 64,
         y = -64,
-        speed = 1
+        speed = 60
 
       })
 

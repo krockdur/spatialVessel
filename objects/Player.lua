@@ -32,7 +32,7 @@ function Player.shoot()
 
       x = Player.x+16,
       y = Player.y,
-      speed = 20
+      speed = 100
 
     })
 
@@ -74,7 +74,7 @@ function Player.update(dt)
       table.remove(Player.tab_bullets, i)
     end
 
-    b.y = b.y - b.speed
+    b.y = b.y - b.speed * dt
   end
 
 
