@@ -28,12 +28,18 @@ end
 -- on dessine la vue
 function love.draw()
   screenManager.draw()
+
+  love.graphics.print("Current FPS: "..tostring(love.timer.getFPS( )), 10, 10)
 end
 
 
 
 -- Boucle
+
+local limit_fps = 60
+
 function love.update(dt)
+
   -- Mise en pause en fonction du focus
   if gameIsPaused then return end
 

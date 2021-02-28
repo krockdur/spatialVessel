@@ -58,22 +58,8 @@ end
 
 
 local wanted_fps = 60
-local nb_frame = 0
-local timerFps = 0
+
 function Game.update(dt)
-
-    ------------- FPS
-    if debug == true then
-      nb_frame = nb_frame + 1
-      timerFps = timerFps + dt
-      if timerFps >= 1 then
-        timerFps = 0
-        print("fps:" .. tostring(nb_frame))
-        nb_frame = 0
-      end
-    end
-    ------------- FIN FPS
-
 
   player.update(dt)
   enemies.update(dt)
