@@ -11,23 +11,23 @@ Enemies.list = {}
 Enemies.pattern = {
   {
     n=1,
-    t=0.4
+    t=1
   },
   {
     n=2,
-    t=0.4
+    t=1
   },
   {
     n=3,
-    t=0.4
+    t=1
   },
   {
     n=4,
-    t=0.4
+    t=1
   },
   {
     n=5,
-    t=0.4
+    t=1
   },
   {
     n=3,
@@ -81,12 +81,20 @@ end
 local indice_vague = 1
 local delta_time = Enemies.pattern[1].t
 local timer_vague = 0
+
+local timer_evolution_enemies = 0
+
 function Enemies.update(dt)
 
 
   -- évolution des ennemies
-  for i, e in pairs(Enemies.list) do
-    e.y = e.y + e.speed
+
+  timer_evolution_enemies = timer_evolution_enemies + dt
+  if timer_evolution_enemies >= 0.00005 then
+    for i, e in pairs(Enemies.list) do
+      e.y = e.y + e.speed
+    end
+    timer_evolution_enemies = 0
   end
 
   -- apparition des ennemies
@@ -109,7 +117,7 @@ function Enemies.update(dt)
 
         x = ecart_pixel * i + (i -1) * 64,
         y = -64,
-        speed = 0.2
+        speed = 1
 
       })
 
