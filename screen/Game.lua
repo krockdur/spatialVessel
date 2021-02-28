@@ -32,32 +32,32 @@ end
 -- r2{x, y, w, h}
 local function check_collision(r1, r2)
 
-  local l1x = r1.x
-  local l2x = r2.x
-  local r1x = l1x + 64
-  local r2x = l2x + 64
-  local l1y = r1.y
-  local l2y = r2.y
-  local r1y = l1y +64
-  local r2y = l2y + 64
+  -- enemies rectangle
+  local p0x = r1.x
+  local p0y = r1.y + 64
+  local p1x = r1.x + 64
+  local p1y = r1.y
 
-  if (l1x >= r2x or l2x >= r1x) then
-      print("A")
-      return false; 
+  -- bullet rectangle
+  local p2x = r2.x
+  local p2y = r2.y + player.sprite_bullet_h
+  local p3x = r2.x + player.sprite_bullet_w
+  local p3y = r2.y
+
+  if
+  p2x > p1x or
+  p3x < p0x or
+  p2y < p1y or
+  p3y > p0y  then
+    return false
+  else
+    return true
   end
 
-  if (l1y <= r2y or l2y <= r1y) then
-    print("B")
-      return false; 
-  end
 
-  print("C")
-  return true; 
 
 end
 
-
-local wanted_fps = 60
 
 function Game.update(dt)
 
@@ -66,20 +66,30 @@ function Game.update(dt)
 
   -- check collision
 
-  for j, e in pairs(enemies.list) do
-    for i, b in pairs(player.tab_bullets) do 
+  local tab_enemies_to_remove = {}
+  if #enemies.list ~= 0 and #player.tab_bullets ~= 0 then
+    for j, e in pairs(enemies.list) do
+      for i, b in pairs(player.tab_bullets) do
 
 
-      local test = check_collision(
-        {x=player.tab_bullets[i].x, y=player.tab_bullets[i].y, w=player.tab_bullets[i].x + 64, h=player.tab_bullets[i].y + 64},
-        {x=enemies.list[j].x, y=enemies.list[j].y, w=enemies.list[j].x + 64, h=enemies.list[j].y + 64}
-      )
+        local test = check_collision(enemies.list[j], player.tab_bullets[i])
 
-      if test == true then
-        table.remove(enemies.list, j)
+        if test == true then
+
+          print("coll")
+          e.pv = e.pv - 1
+          if e.pv <= 0 then
+            table.remove(enemies.list, j)
+          end
+          table.remove(player.tab_bullets, i)
+          break
+        end
+
       end
 
     end
+
+    
 
   end
 

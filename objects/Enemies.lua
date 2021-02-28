@@ -114,7 +114,8 @@ function Enemies.update(dt)
 
         x = ecart_pixel * i + (i -1) * 64,
         y = -64,
-        speed = 60
+        speed = 60,
+        pv = 4
 
       })
 

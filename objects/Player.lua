@@ -6,9 +6,12 @@ Player.y = 500
 Player.w = 64
 Player.h = 64
 
+-- bullets configuration
 Player.tab_bullets = {}
-
-Player.interval_shoot = 0.005 --0.5 secondes
+Player.interval_shoot = 0.25 --0.5 secondes
+Player.speed_shoot = 800
+Player.sprite_bullet_w = 32
+Player.sprite_bullet_h = 32
 
 --assets
 local sprite_player 
@@ -30,9 +33,9 @@ function Player.shoot()
   sound_shoot_1:play()
   table.insert(Player.tab_bullets, {
 
-      x = Player.x+16,
+      x = Player.x+Player.sprite_bullet_w/2,
       y = Player.y,
-      speed = 100
+      speed = Player.speed_shoot
 
     })
 
@@ -50,7 +53,7 @@ function Player.draw()
 
     love.graphics.draw(sprite_bullet_1, b.x, b.y)
     if DEBUG_GAME == true then
-      love.graphics.rectangle("line", b.x, b.y, 64, 64)
+      love.graphics.rectangle("line", b.x, b.y, 32, 32)
     end
   end
 
