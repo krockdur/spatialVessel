@@ -59,23 +59,12 @@ end
 
 ---------------------------------------------------
 
-local nb_frame = 0
-local timerFps = 0
+
 local timerShooter = 0
 function Player.update(dt)
 
 
-  ------------- FPS
-  if debug == true then
-    nb_frame = nb_frame + 1
-    timerFps = timerFps + dt
-    if timerFps >= 1 then
-      timerFps = 0
-      print("fps:" .. tostring(nb_frame))
-      nb_frame = 0
-    end
-  end
-  ------------- FIN FPS
+
 
   -- bullets
   for i,b in pairs(Player.tab_bullets) do
