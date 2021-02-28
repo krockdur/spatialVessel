@@ -67,7 +67,7 @@ function Enemies.draw()
   if #Enemies.list > 0 then
     for i, e in pairs(Enemies.list) do
       love.graphics.draw(sprite_enemy_1, e.x, e.y)
-      if debug == true then
+      if DEBUG_GAME == true then
         love.graphics.rectangle("line", e.x, e.y, 64, 64)
       end
     end

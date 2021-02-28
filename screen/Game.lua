@@ -4,7 +4,7 @@ local enemies = require("objects.Enemies")
 
 local Game = {}
 
-debug = true
+DEBUG_GAME = true
 
 -----------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ end
 function Game.draw()
   player.draw()
   enemies.draw()
-  if debug == true then
+  if DEBUG_GAME == true then
     love.graphics.rectangle("line", 0, 0, 512, 768)
   end
 

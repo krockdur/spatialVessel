@@ -49,7 +49,7 @@ function Player.draw()
   for i,b in pairs(Player.tab_bullets) do
 
     love.graphics.draw(sprite_bullet_1, b.x, b.y)
-    if debug == true then
+    if DEBUG_GAME == true then
       love.graphics.rectangle("line", b.x, b.y, 64, 64)
     end
   end
