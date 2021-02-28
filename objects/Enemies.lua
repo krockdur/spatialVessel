@@ -83,6 +83,7 @@ local delta_time = Enemies.pattern[1].t
 local timer_vague = 0
 function Enemies.update(dt)
 
+
   -- évolution des ennemies
   for i, e in pairs(Enemies.list) do
     e.y = e.y + e.speed
@@ -90,7 +91,7 @@ function Enemies.update(dt)
 
   -- apparition des ennemies
   timer_vague = timer_vague + dt
-  print(tostring(timer_vague))
+  
 
   --
   if timer_vague >= delta_time then
@@ -103,7 +104,7 @@ function Enemies.update(dt)
 
     -- creation des enemies
     for i = 1, nb_enemies do
-      
+
       table.insert(Enemies.list, {
 
         x = ecart_pixel * i + (i -1) * 64,
@@ -124,9 +125,6 @@ function Enemies.update(dt)
   end
 
 
-
-
-
-end  
+end
 
 return Enemies
