@@ -85,8 +85,6 @@ function Game.update(dt)
 
     end
 
-    
-
   end
 
 end

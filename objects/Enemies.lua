@@ -5,6 +5,8 @@ local Enemies = {}
 
 Enemies.list = {}
 
+Enemies.tab_bullets = {}
+
 Enemies.sprite_w = 64
 Enemies.sprite_h = 64
 
@@ -16,31 +18,31 @@ Enemies.sprite_h = 64
 -- pattern_move     => type de déplacement. 1=>y+ 2=>x+y+ 3=>x-y+
 Enemies.pattern = {
   {
-    number=1, period=1, type=1, pv=1, pattern_move=1
+    number=1, period=1, type=1, pv=1, pattern_move=1, fire=1
   },
   {
-    number=2, period=1, type=2, pv=2, pattern_move=2
+    number=2, period=1, type=2, pv=2, pattern_move=2, fire=0
   },
   {
-    number=3, period=1, type=1, pv=1, pattern_move=1
+    number=3, period=1, type=1, pv=1, pattern_move=1, fire=1
   },
   {
-    number=4, period=1, type=1, pv=1, pattern_move=3
+    number=4, period=1, type=1, pv=1, pattern_move=3, fire=0
   },
   {
-    number=5, period=1, type=2, pv=2, pattern_move=1
+    number=5, period=1, type=2, pv=2, pattern_move=1, fire=1
   },
   {
-    number=3, period=3, type=1, pv=1, pattern_move=1
+    number=3, period=3, type=1, pv=1, pattern_move=1, fire=0
   },
   {
-    number=2, period=5, type=1, pv=1, pattern_move=1
+    number=2, period=5, type=1, pv=1, pattern_move=1, fire=1
   },
   {
-    number=4, period=5, type=1, pv=1, pattern_move=1
+    number=4, period=5, type=1, pv=1, pattern_move=1, fire=0
   },
   {
-    number=5, period=5, type=1, pv=1, pattern_move=1
+    number=5, period=5, type=1, pv=1, pattern_move=1, fire=1
   }
 }
 
@@ -48,12 +50,14 @@ Enemies.pattern = {
 
 local sprite_enemy_1
 local sprite_enemy_2
+local sprite_bullets
 
 --------------------------------------------------------------
 
 function Enemies.load()
   sprite_enemy_1 = love.graphics.newImage("assets/enemy1.png")
   sprite_enemy_2 = love.graphics.newImage("assets/enemy2.png")
+  sprite_bullets = love.graphics.newImage("assets/bullets_enemy_1.png")
 end
 
 
@@ -64,6 +68,7 @@ end
 function Enemies.draw()
 
   if #Enemies.list > 0 then
+
     for i, e in pairs(Enemies.list) do
 
       if e.type == 1 then
@@ -76,7 +81,19 @@ function Enemies.draw()
       if DEBUG_GAME == true then
         love.graphics.rectangle("line", e.x, e.y, 64, 64)
       end
+
+      for j,b in pairs(Enemies.tab_bullets) do
+
+        love.graphics.draw(sprite_bullets, b.x, b.y)
+        if DEBUG_GAME == true then
+          love.graphics.rectangle("line", b.x, b.y, 32, 32)
+        end
+      end
+
     end
+
+
+
   end
 
 end
@@ -91,10 +108,12 @@ local timer_vague = 0
 local timer_evolution_enemies = 0
 local pattern_2_direction = 0
 local pattern_3_direction = 1
+
+local timerShooter = 0
 function Enemies.update(dt)
 
 
-  -- évolution des ennemies
+  -- DEPLACEMENT DES ENNEMIES
   for i, e in pairs(Enemies.list) do
 
     if e.pattern_move == 1 then
@@ -137,6 +156,34 @@ function Enemies.update(dt)
       e.y = e.y + e.speed * dt
     end
 
+    -- TIR DES ENNEMIES
+    timerShooter = timerShooter + dt
+    if timerShooter >= 2 then
+
+      if e.type_fire ~= 0 then
+        table.insert(Enemies.tab_bullets, {
+
+          x = e.x + 16,
+          y = e.y,
+          speed = 60
+    
+        })
+      end
+
+      timerShooter = 0
+    end
+    
+    -- DEPLACEMENT DES BULLETS
+    for j,b in pairs(Enemies.tab_bullets) do
+
+      -- si la bullet sort de l'écran
+      if b.y > love.graphics.getHeight() then
+        table.remove(Enemies.tab_bullets, j)
+      end
+
+      b.y = b.y + b.speed * dt
+    end
+
   end
 
 
@@ -152,6 +199,7 @@ function Enemies.update(dt)
     local type_enemies = Enemies.pattern[indice_vague].type
     local pv_enemies = Enemies.pattern[indice_vague].pv
     local pattern_move = Enemies.pattern[indice_vague].pattern_move
+    local type_fire = Enemies.pattern[indice_vague].fire
     -- calcul écart des énemies
     local nb_ecarts = nb_enemies + 1
     local ecart_pixel = (love.graphics.getWidth() - (nb_enemies * 64)) / nb_ecarts
@@ -165,9 +213,9 @@ function Enemies.update(dt)
         y = -64,
         speed = 60,
         pv = pv_enemies,
-        type=type_enemies,
-        pattern_move=pattern_move
-
+        type = type_enemies,
+        pattern_move = pattern_move,
+        type_fire = type_fire
       })
 
     end
