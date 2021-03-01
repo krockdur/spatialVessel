@@ -1,15 +1,17 @@
 
 local player = require("objects.Player")
 local enemies = require("objects.Enemies")
+local background = require("objects.Background")
 
 local Game = {}
 
-DEBUG_GAME = true
+DEBUG_GAME = false
 
 -----------------------------------------------------------------------
 
 function Game.load()
 
+  background.load()
   player.load()
   enemies.load()
 
@@ -19,17 +21,13 @@ end
 
 
 function Game.draw()
+  background.draw()
   player.draw()
   enemies.draw()
-  if DEBUG_GAME == true then
-    love.graphics.rectangle("line", 0, 0, 512, 768)
-  end
-
 end
 
 -----------------------------------------------------------------------
--- r1{x, y, w, h}
--- r2{x, y, w, h}
+
 local function check_collision(r1, r2)
 
   -- enemies rectangle
@@ -53,8 +51,6 @@ local function check_collision(r1, r2)
   else
     return true
   end
-
-
 
 end
 

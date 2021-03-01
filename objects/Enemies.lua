@@ -8,53 +8,48 @@ Enemies.list = {}
 -- pattern d'apparition des ennemies
 -- n => nombre d'ennemies dans la vague
 -- t => temps en seconde avant l'apparition de la vague
+-- v => type de l'enemie
+-- pv => pv par enemie de la vague
 Enemies.pattern = {
   {
-    n=1,
-    t=1
+    n=1, t=1, v=1, pv=1
   },
   {
-    n=2,
-    t=1
+    n=2, t=1, v=2, pv=2
   },
   {
-    n=3,
-    t=1
+    n=3, t=1, v=1, pv=1
   },
   {
-    n=4,
-    t=1
+    n=4, t=1, v=1, pv=1
   },
   {
-    n=5,
-    t=1
+    n=5, t=1, v=2, pv=2
   },
   {
-    n=3,
-    t=3
+    n=3, t=3, v=1, pv=1
   },
   {
-    n=2,
-    t=5
+    n=2, t=5, v=1, pv=1
   },
   {
-    n=4,
-    t=5
+    n=4, t=5, v=1, pv=1
   },
   {
-    n=5,
-    t=5
+    n=5, t=5, v=1, pv=1
   }
 }
 
 --------------------------------------------------------------
 
 local sprite_enemy_1
+local sprite_enemy_2
 
 --------------------------------------------------------------
 
 function Enemies.load()
   sprite_enemy_1 = love.graphics.newImage("assets/enemy1.png")
+  sprite_enemy_2 = love.graphics.newImage("assets/enemy2.png")
 end
 
 
@@ -66,7 +61,14 @@ function Enemies.draw()
 
   if #Enemies.list > 0 then
     for i, e in pairs(Enemies.list) do
+
+      if e.type == 1 then
       love.graphics.draw(sprite_enemy_1, e.x, e.y)
+      end
+      if e.type == 2 then
+        love.graphics.draw(sprite_enemy_2, e.x, e.y)
+      end        
+
       if DEBUG_GAME == true then
         love.graphics.rectangle("line", e.x, e.y, 64, 64)
       end
@@ -102,6 +104,8 @@ function Enemies.update(dt)
   if timer_vague >= delta_time then
 
     local nb_enemies = Enemies.pattern[indice_vague].n
+    local type_enemies = Enemies.pattern[indice_vague].v
+    local pv_enemies = Enemies.pattern[indice_vague].pv
 
     -- calcul écart des énemies
     local nb_ecarts = nb_enemies + 1
@@ -115,7 +119,8 @@ function Enemies.update(dt)
         x = ecart_pixel * i + (i -1) * 64,
         y = -64,
         speed = 60,
-        pv = 4
+        pv = pv_enemies,
+        type=type_enemies
 
       })
 

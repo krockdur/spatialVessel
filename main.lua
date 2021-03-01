@@ -14,7 +14,7 @@ love2d : 	11.3
 local screenManager = require('screen.ScreenManager')
 
 -- meilleur rendu avec du pixel art
-love.graphics.setDefaultFilter('nearest')
+--love.graphics.setDefaultFilter('nearest')
 
 local gameIsPaused = false
 
@@ -42,7 +42,7 @@ function love.update(dt)
   -- Mise en pause en fonction du focus
   if gameIsPaused then return end
 
-  screenManager.update(dt)
+  screenManager.update(dt) 
 
 end
 
