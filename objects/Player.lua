@@ -23,7 +23,7 @@ local sound_shoot_1
 
 function Player.load()
   sprite_player = love.graphics.newImage("assets/vessel.png")
-  sprite_bullet_1 = love.graphics.newImage("assets/bullets.png")
+  sprite_bullet_1 = love.graphics.newImage("assets/bullets1.png")
   sound_shoot_1 = love.audio.newSource("assets/sounds/shoot1.wav", "static")
 end
 
@@ -46,7 +46,7 @@ end
 
 function Player.draw()
 
-  love.graphics.draw(sprite_player, Player.x, Player.y)
+  
 
 
   for i,b in pairs(Player.tab_bullets) do
@@ -56,7 +56,7 @@ function Player.draw()
       love.graphics.rectangle("line", b.x, b.y, 32, 32)
     end
   end
-
+  love.graphics.draw(sprite_player, Player.x, Player.y)
 
 end
 

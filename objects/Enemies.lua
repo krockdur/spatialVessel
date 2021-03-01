@@ -5,38 +5,42 @@ local Enemies = {}
 
 Enemies.list = {}
 
+Enemies.sprite_w = 64
+Enemies.sprite_h = 64
+
 -- pattern d'apparition des ennemies
--- n => nombre d'ennemies dans la vague
--- t => temps en seconde avant l'apparition de la vague
--- v => type de l'enemie
--- pv => pv par enemie de la vague
+-- number           => nombre d'ennemies dans la vague
+-- period           => temps en seconde avant l'apparition de la vague
+-- type             => type de l'enemie. sprite_enemy_x => type=x
+-- pv               => pv par enemie de la vague
+-- pattern_move     => type de déplacement. 1=>y+ 2=>x+y+ 3=>x-y+
 Enemies.pattern = {
   {
-    n=1, t=1, v=1, pv=1
+    number=1, period=1, type=1, pv=1, pattern_move=1
   },
   {
-    n=2, t=1, v=2, pv=2
+    number=2, period=1, type=2, pv=2, pattern_move=2
   },
   {
-    n=3, t=1, v=1, pv=1
+    number=3, period=1, type=1, pv=1, pattern_move=1
   },
   {
-    n=4, t=1, v=1, pv=1
+    number=4, period=1, type=1, pv=1, pattern_move=3
   },
   {
-    n=5, t=1, v=2, pv=2
+    number=5, period=1, type=2, pv=2, pattern_move=1
   },
   {
-    n=3, t=3, v=1, pv=1
+    number=3, period=3, type=1, pv=1, pattern_move=1
   },
   {
-    n=2, t=5, v=1, pv=1
+    number=2, period=5, type=1, pv=1, pattern_move=1
   },
   {
-    n=4, t=5, v=1, pv=1
+    number=4, period=5, type=1, pv=1, pattern_move=1
   },
   {
-    n=5, t=5, v=1, pv=1
+    number=5, period=5, type=1, pv=1, pattern_move=1
   }
 }
 
@@ -81,17 +85,58 @@ end
 --------------------------------------------------------------
 
 local indice_vague = 1
-local delta_time = Enemies.pattern[1].t
+local delta_time = Enemies.pattern[1].period
 local timer_vague = 0
 
 local timer_evolution_enemies = 0
-
+local pattern_2_direction = 0
+local pattern_3_direction = 1
 function Enemies.update(dt)
 
 
   -- évolution des ennemies
   for i, e in pairs(Enemies.list) do
-    e.y = e.y + e.speed * dt
+
+    if e.pattern_move == 1 then
+      e.y = e.y + e.speed * dt
+    end
+
+    if e.pattern_move == 2 then
+
+      if e.x >= (love.graphics.getWidth() - Enemies.sprite_w) and pattern_2_direction == 0 then
+        pattern_2_direction = 1
+      end
+
+      if e.x <= (0 + Enemies.sprite_w) and pattern_2_direction == 1 then
+        pattern_2_direction = 0
+      end
+
+      if pattern_2_direction == 0 then
+        e.x = e.x + e.speed * dt
+      else
+        e.x = e.x - e.speed * dt
+      end
+      e.y = e.y + e.speed * dt
+    end
+
+    if e.pattern_move == 3 then
+
+      if e.x >= (love.graphics.getWidth() - Enemies.sprite_w) and pattern_3_direction == 0 then
+        pattern_3_direction = 1
+      end
+
+      if e.x <= (0 + Enemies.sprite_w) and pattern_3_direction == 1 then
+        pattern_3_direction = 0
+      end
+
+      if pattern_3_direction == 0 then
+        e.x = e.x + e.speed * dt
+      else
+        e.x = e.x - e.speed * dt
+      end
+      e.y = e.y + e.speed * dt
+    end
+
   end
 
 
@@ -103,10 +148,10 @@ function Enemies.update(dt)
   --
   if timer_vague >= delta_time then
 
-    local nb_enemies = Enemies.pattern[indice_vague].n
-    local type_enemies = Enemies.pattern[indice_vague].v
+    local nb_enemies = Enemies.pattern[indice_vague].number
+    local type_enemies = Enemies.pattern[indice_vague].type
     local pv_enemies = Enemies.pattern[indice_vague].pv
-
+    local pattern_move = Enemies.pattern[indice_vague].pattern_move
     -- calcul écart des énemies
     local nb_ecarts = nb_enemies + 1
     local ecart_pixel = (love.graphics.getWidth() - (nb_enemies * 64)) / nb_ecarts
@@ -120,14 +165,15 @@ function Enemies.update(dt)
         y = -64,
         speed = 60,
         pv = pv_enemies,
-        type=type_enemies
+        type=type_enemies,
+        pattern_move=pattern_move
 
       })
 
     end
 
     indice_vague = indice_vague + 1
-    delta_time = Enemies.pattern[indice_vague].t
+    delta_time = Enemies.pattern[indice_vague].period
     timer_vague = 0
     if indice_vague > #Enemies.pattern then
       indice_vague = 1
