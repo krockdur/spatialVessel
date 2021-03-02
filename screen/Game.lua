@@ -7,9 +7,20 @@ local Game = {}
 
 DEBUG_GAME = false
 
+local sound_touch_1
+local sprite_explosion_1
+local sprite_explosion_2
+local sprite_explosion_3
+
 -----------------------------------------------------------------------
 
 function Game.load()
+
+  sound_touch_1 = love.audio.newSource("assets/sounds/touch1.wav", "static")
+
+  sprite_explosion_1 = love.graphics.newImage("assets/explosion1.png")
+  sprite_explosion_2 = love.graphics.newImage("assets/explosion2.png")
+  sprite_explosion_3 = love.graphics.newImage("assets/explosion3.png")
 
   background.load()
   player.load()
@@ -19,11 +30,22 @@ end
 
 -----------------------------------------------------------------------
 
+function Game.update(dt)
+
+  player.update(dt)
+  enemies.update(dt)
+  Game.update_collision(dt)
+  Game.animate_explosion(dt)
+
+end
+
+-----------------------------------------------------------------------
 
 function Game.draw()
   background.draw()
   player.draw()
   enemies.draw()
+  Game.draw_anim_explosion()
 end
 
 -----------------------------------------------------------------------
@@ -54,42 +76,83 @@ local function check_collision(r1, r2)
 
 end
 
+-----------------------------------------------------------------------
 
-function Game.update(dt)
+function Game.update_collision(dt)
+    -- check collision
 
-  player.update(dt)
-  enemies.update(dt)
-
-  -- check collision
-
-  local tab_enemies_to_remove = {}
-  if #enemies.list ~= 0 and #player.tab_bullets ~= 0 then
-    for j, e in pairs(enemies.list) do
-      for i, b in pairs(player.tab_bullets) do
-
-
-        local test = check_collision(enemies.list[j], player.tab_bullets[i])
-
-        if test == true then
-
-          print("coll")
-          e.pv = e.pv - 1
-          if e.pv <= 0 then
-            table.remove(enemies.list, j)
+    if #enemies.list ~= 0 and #player.tab_bullets ~= 0 then
+      for j, e in pairs(enemies.list) do
+        for i, b in pairs(player.tab_bullets) do
+  
+          if check_collision(enemies.list[j], player.tab_bullets[i]) then
+            e.pv = e.pv - 1
+            
+            sound_touch_1:stop()
+            sound_touch_1:play()
+  
+            -- animation si énnemie touché
+            Game.add_anim_explosion(e.x, e.y)
+  
+            if e.pv <= 0 then
+              table.remove(enemies.list, j)
+            end
+            table.remove(player.tab_bullets, i)
+            break
           end
-          table.remove(player.tab_bullets, i)
-          break
+  
         end
-
+  
       end
-
+  
     end
+end
 
+-----------------------------------------------------------------------
+
+Game.tab_explosion = {}
+function Game.add_anim_explosion(x, y)
+
+  table.insert(Game.tab_explosion, {
+    x=x+16,
+    y=y+16,
+    state=0
+  })
+
+end
+
+local timer_explosion = 0
+function Game.animate_explosion(dt)
+
+  timer_explosion = timer_explosion + dt
+  if timer_explosion >= 0.05 then
+    for i,e in pairs(Game.tab_explosion) do
+      e.state = e.state + 1
+      timer_explosion = 0
+      if e.state > 3 then
+        table.remove(Game.tab_explosion, i)
+        
+      end
+    end
   end
 
 end
 
+function Game.draw_anim_explosion()
+  for i, e in pairs(Game.tab_explosion) do
 
+    if e.state == 1 then
+      love.graphics.draw(sprite_explosion_1, e.x, e.y)
+    end
+    if e.state == 2 then
+      love.graphics.draw(sprite_explosion_2, e.x, e.y)
+    end
+    if e.state == 3 then
+      love.graphics.draw(sprite_explosion_3, e.x, e.y)
+    end
+
+  end
+end
 
 -----------------------------------------------------------------------
 

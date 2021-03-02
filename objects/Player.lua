@@ -8,8 +8,8 @@ Player.h = 64
 
 -- bullets configuration
 Player.tab_bullets = {}
-Player.interval_shoot = 0.25 --0.5 secondes
-Player.speed_shoot = 800
+Player.interval_shoot = 0.15 --0.5 secondes
+Player.speed_shoot = 1500
 Player.sprite_bullet_w = 32
 Player.sprite_bullet_h = 32
 
@@ -17,6 +17,7 @@ Player.sprite_bullet_h = 32
 local sprite_player 
 local sprite_bullet_1
 local sound_shoot_1
+
 
 
 ---------------------------------------------------
@@ -30,6 +31,7 @@ end
 ---------------------------------------------------
 
 function Player.shoot()
+  sound_shoot_1:stop()
   sound_shoot_1:play()
   table.insert(Player.tab_bullets, {
 

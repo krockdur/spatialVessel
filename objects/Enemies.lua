@@ -1,3 +1,4 @@
+local Player = require "objects.Player"
 
 
 
@@ -9,6 +10,10 @@ Enemies.tab_bullets = {}
 
 Enemies.sprite_w = 64
 Enemies.sprite_h = 64
+
+Enemies.shoot_interval = 2 -- en secondes
+Enemies.shoot_speed = 200
+Enemies.speed = 80
 
 -- pattern d'apparition des ennemies
 -- number           => nombre d'ennemies dans la vague
@@ -46,13 +51,13 @@ Enemies.pattern = {
   }
 }
 
---------------------------------------------------------------
+-- =================================================================== --
 
 local sprite_enemy_1
 local sprite_enemy_2
 local sprite_bullets
 
---------------------------------------------------------------
+-- =================================================================== --
 
 function Enemies.load()
   sprite_enemy_1 = love.graphics.newImage("assets/enemy1.png")
@@ -60,13 +65,29 @@ function Enemies.load()
   sprite_bullets = love.graphics.newImage("assets/bullets_enemy_1.png")
 end
 
+-- =================================================================== --
 
---------------------------------------------------------------
+function Enemies.update(dt)
 
+  Enemies.move(dt)
+  Enemies.shoot(dt)
+  Enemies.move_shoots(dt)
+  Enemies.create_from_pattern(dt)
 
+end
+
+-- =================================================================== --
 
 function Enemies.draw()
 
+  Enemies.draw_enemies()
+  Enemies.draw_bullets()
+
+end
+
+-- =================================================================== --
+
+function Enemies.draw_enemies()
   if #Enemies.list > 0 then
 
     for i, e in pairs(Enemies.list) do
@@ -82,36 +103,29 @@ function Enemies.draw()
         love.graphics.rectangle("line", e.x, e.y, 64, 64)
       end
 
-      for j,b in pairs(Enemies.tab_bullets) do
-
-        love.graphics.draw(sprite_bullets, b.x, b.y)
-        if DEBUG_GAME == true then
-          love.graphics.rectangle("line", b.x, b.y, 32, 32)
-        end
-      end
-
     end
 
-
-
   end
-
 end
 
+-- =================================================================== --
 
---------------------------------------------------------------
+function Enemies.draw_bullets()
+  for j,b in pairs(Enemies.tab_bullets) do
 
-local indice_vague = 1
-local delta_time = Enemies.pattern[1].period
-local timer_vague = 0
+    love.graphics.draw(sprite_bullets, b.x, b.y)
+    if DEBUG_GAME == true then
+      love.graphics.rectangle("line", b.x, b.y, 32, 32)
+    end
+  end
+end
 
-local timer_evolution_enemies = 0
+-- =================================================================== --
+
+-- déplace les énnemies
 local pattern_2_direction = 0
 local pattern_3_direction = 1
-
-local timerShooter = 0
-function Enemies.update(dt)
-
+function Enemies.move(dt)
 
   -- DEPLACEMENT DES ENNEMIES
   for i, e in pairs(Enemies.list) do
@@ -156,43 +170,24 @@ function Enemies.update(dt)
       e.y = e.y + e.speed * dt
     end
 
-    -- TIR DES ENNEMIES
-    timerShooter = timerShooter + dt
-    if timerShooter >= 2 then
-
-      if e.type_fire ~= 0 then
-        table.insert(Enemies.tab_bullets, {
-
-          x = e.x + 16,
-          y = e.y,
-          speed = 60
-    
-        })
-      end
-
-      timerShooter = 0
-    end
-    
-    -- DEPLACEMENT DES BULLETS
-    for j,b in pairs(Enemies.tab_bullets) do
-
-      -- si la bullet sort de l'écran
-      if b.y > love.graphics.getHeight() then
-        table.remove(Enemies.tab_bullets, j)
-      end
-
-      b.y = b.y + b.speed * dt
+    -- suppression des énnemies hors écran
+    if e.y > love.graphics.getHeight() then
+      table.remove(Enemies.list, i)
     end
 
   end
 
+end
 
+-- =================================================================== --
 
+-- créer les vagues d'ennemies à partir d'un pattern
+local indice_vague = 1
+local delta_time = Enemies.pattern[1].period
+local timer_vague = 0
+function Enemies.create_from_pattern(dt)
   -- apparition des ennemies
   timer_vague = timer_vague + dt
-  
-
-  --
   if timer_vague >= delta_time then
 
     local nb_enemies = Enemies.pattern[indice_vague].number
@@ -211,7 +206,7 @@ function Enemies.update(dt)
 
         x = ecart_pixel * i + (i -1) * 64,
         y = -64,
-        speed = 60,
+        speed = Enemies.speed,
         pv = pv_enemies,
         type = type_enemies,
         pattern_move = pattern_move,
@@ -221,15 +216,53 @@ function Enemies.update(dt)
     end
 
     indice_vague = indice_vague + 1
-    delta_time = Enemies.pattern[indice_vague].period
     timer_vague = 0
     if indice_vague > #Enemies.pattern then
       indice_vague = 1
     end
+    delta_time = Enemies.pattern[indice_vague].period
 
   end
+end
 
+-- =================================================================== --
 
+-- déplace les tirs énnemies
+function Enemies.move_shoots(dt)
+  -- DEPLACEMENT DES BULLETS
+  for j,b in pairs(Enemies.tab_bullets) do
+
+    -- si la bullet sort de l'écran
+    if b.y > love.graphics.getHeight() then
+      table.remove(Enemies.tab_bullets, j)
+    end
+
+    b.y = b.y + b.speed * dt
+  end
+end
+
+-- =================================================================== --
+
+-- Ajoute les tirs énnemies dans tab_bullets
+local timerShooter = 0
+function Enemies.shoot(dt)
+  timerShooter = timerShooter + dt
+  if timerShooter >= Enemies.shoot_interval then
+    for i, e in pairs(Enemies.list) do
+
+      if e.type_fire ~= 0 then
+        table.insert(Enemies.tab_bullets, {
+
+          x = e.x + 16,
+          y = e.y,
+          speed = Enemies.shoot_speed
+    
+        })
+
+      end
+    end
+    timerShooter = 0
+  end
 end
 
 return Enemies
