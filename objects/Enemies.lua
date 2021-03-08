@@ -23,31 +23,10 @@ Enemies.speed = 80
 -- pattern_move     => type de déplacement. 1=>y+ 2=>x+y+ 3=>x-y+
 Enemies.pattern = {
   {
-    number=1, period=1, type=1, pv=1, pattern_move=1, fire=1
+    number=1, period=2, type=1, pv=1, pattern_move=1, fire=1
   },
   {
-    number=2, period=1, type=2, pv=2, pattern_move=2, fire=0
-  },
-  {
-    number=3, period=1, type=1, pv=1, pattern_move=1, fire=1
-  },
-  {
-    number=4, period=1, type=1, pv=1, pattern_move=3, fire=0
-  },
-  {
-    number=5, period=1, type=2, pv=2, pattern_move=1, fire=1
-  },
-  {
-    number=3, period=3, type=1, pv=1, pattern_move=1, fire=0
-  },
-  {
-    number=2, period=5, type=1, pv=1, pattern_move=1, fire=1
-  },
-  {
-    number=4, period=5, type=1, pv=1, pattern_move=1, fire=0
-  },
-  {
-    number=5, period=5, type=1, pv=1, pattern_move=1, fire=1
+    number=2, period=1, type=2, pv=2, pattern_move=1, fire=0
   }
 }
 
