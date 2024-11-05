@@ -1,7 +1,4 @@
-### Love2D skeleton
+Game writed for gamejam gamedev.js 2023
 
-## TODO
-
-- Ajouter plusieurs types d'énemies
-- Ajouter dans le pattern de génération des énemies, le type d'enemie généré
-- Arrière plan
+To test the game :
+https://jf72.itch.io/30s
