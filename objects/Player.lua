@@ -5,6 +5,7 @@ Player.x = 400
 Player.y = 500
 Player.w = 64
 Player.h = 64
+Player.a = 0 -- orientation
 
 -- bullets configuration
 Player.tab_bullets = {}
@@ -35,9 +36,11 @@ function Player.shoot()
   sound_shoot_1:play()
   table.insert(Player.tab_bullets, {
 
-      x = Player.x+Player.sprite_bullet_w/2,
+      --x = Player.x+Player.sprite_bullet_w/2,
+      x = Player.x,
       y = Player.y,
-      speed = Player.speed_shoot
+      speed = Player.speed_shoot,
+      a = Player.a
 
     })
 
@@ -53,13 +56,21 @@ function Player.draw()
 
   for i,b in pairs(Player.tab_bullets) do
 
-    love.graphics.draw(sprite_bullet_1, b.x, b.y)
+    love.graphics.draw(sprite_bullet_1, b.x, b.y, b.a, 1, 1, sprite_bullet_1:getWidth()/2, sprite_bullet_1:getHeight()/2)
     if DEBUG_GAME == true then
       love.graphics.rectangle("line", b.x, b.y, 32, 32)
     end
   end
-  love.graphics.draw(sprite_player, Player.x, Player.y)
+  love.graphics.draw(sprite_player, Player.x, Player.y, Player.a, 1, 1, sprite_player:getWidth()/2, sprite_player:getHeight()/2)
 
+
+  --
+  -- print debug
+  love.graphics.print("getWidth: "..tostring(love.graphics.getWidth()), 10, 30)
+  love.graphics.print("getHeight: "..tostring(love.graphics.getHeight()), 10, 50)
+
+  love.graphics.print("x: "..tostring(Player.x), 10, 70)
+  love.graphics.print("y: "..tostring(Player.y), 10, 90)
 end
 
 ---------------------------------------------------
@@ -76,13 +87,48 @@ function Player.update(dt)
   for i,b in pairs(Player.tab_bullets) do
 
     -- si la bullet sort de l'écran
-    if b.y < -64 then
+    if b.y < 0 or b.y > love.graphics.getHeight() or b.x < 0 or b.x > love.graphics.getWidth() then
       table.remove(Player.tab_bullets, i)
     end
 
-    b.y = b.y - b.speed * dt
+    -- b.y = b.y - b.speed * dt
+    b.x = b.x+b.speed * math.sin(b.a) * dt
+    b.y = b.y-b.speed * math.cos(b.a) * dt
+
   end
 
+
+  -- Acquisition déplacement zqsd
+  local direction_x = 0
+  local direction_y = 0
+  if love.keyboard.isDown("z") then
+    direction_y = -1
+  end
+  if love.keyboard.isDown("q") then
+    direction_x = -1
+  end
+  if love.keyboard.isDown("s") then
+    direction_y = 1
+  end
+  if love.keyboard.isDown("d") then
+    direction_x = 1
+  end
+
+  -- déplacement
+  
+  Player.x = (Player.x + (3 * direction_x  ))  % love.graphics.getWidth()
+  Player.y = (Player.y + (3 * direction_y ))   % love.graphics.getHeight()
+
+  -- orientation
+  local dx = Player.x - love.mouse.getX()
+  local dy = Player.y - love.mouse.getY()
+
+  if Player.y > love.mouse.getY() then
+    Player.a = -math.atan(dx/dy)
+  end
+  if Player.y < love.mouse.getY() then
+    Player.a = math.pi-math.atan(dx/dy)
+  end
 
   -- click gauche - shoot
   if love.mouse.isDown(1) then
@@ -98,9 +144,17 @@ end
 
 ---------------------------------------------------
 
+function Player.keypressed(key, scancode, isrepeat)
+
+
+end
+
+
+---------------------------------------------------
+
 function Player.mousemoved(x, y, dx, dy, istouch)
-  Player.x = x - Player.w/2
-  Player.y = y - Player.h/2
+  --Player.x = x - Player.w/2
+  --Player.y = y - Player.h/2
 end
 
 ---------------------------------------------------

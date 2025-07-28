@@ -82,7 +82,15 @@ end
 function ScreenManager.mousereleased(x, y, button, istouch)
 end
 
-function ScreenManager.keypressed(key)
+function ScreenManager.keypressed(key, scancode, isrepeat)
+  game.keypressed(key, scancode, isrepeat)
+
+     if key == "tab" then
+      local state = not love.mouse.isVisible()   -- the opposite of whatever it currently is
+      love.mouse.setVisible(state)
+   end
+
+   
 end
 
 function ScreenManager.keyreleased(key)

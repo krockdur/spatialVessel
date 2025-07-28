@@ -2,6 +2,7 @@
 local player = require("objects.Player")
 local enemies = require("objects.Enemies")
 local background = require("objects.Background")
+local ui = require("objects.Ui")
 
 local Game = {}
 
@@ -25,6 +26,7 @@ function Game.load()
   background.load()
   player.load()
   enemies.load()
+  ui.load()
 
 end
 
@@ -36,6 +38,7 @@ function Game.update(dt)
   enemies.update(dt)
   Game.update_collision(dt)
   Game.animate_explosion(dt)
+  ui.update(dt)
 
 end
 
@@ -46,6 +49,7 @@ function Game.draw()
   player.draw()
   enemies.draw()
   Game.draw_anim_explosion()
+  ui.draw()
 end
 
 -----------------------------------------------------------------------
@@ -156,8 +160,8 @@ end
 
 -----------------------------------------------------------------------
 
-function Game.keypressed(key)
-  
+function Game.keypressed(key, scancode, isrepeat)
+  player.keypressed(key, scancode, isrepeat)
 end
 
 -----------------------------------------------------------------------

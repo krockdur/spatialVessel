@@ -21,6 +21,8 @@ local gameIsPaused = false
 
 -- Initilisation
 function love.load()
+  love.keyboard.setKeyRepeat(true)
+  
   screenManager.load()
 end
 
@@ -56,8 +58,8 @@ function love.mousereleased(x, y, button, istouch)
   screenManager.mousereleased(x, y, button, istouch)
 end
 
-function love.keypressed(key)
-  screenManager.keypressed(key)
+function love.keypressed(key, scancode, isrepeat)
+  screenManager.keypressed(key, scancode, isrepeat)
 end
 
 function love.keyreleased(key)

@@ -27,6 +27,9 @@ Enemies.pattern = {
   },
   {
     number=2, period=1, type=2, pv=2, pattern_move=1, fire=0
+  },
+  {
+    number=5, period=1, type=2, pv=1, pattern_move=3, fire=1
   }
 }
 

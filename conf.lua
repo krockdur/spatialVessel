@@ -25,7 +25,7 @@ function love.conf(t)
   t.window.width = 1024
   t.window.height = 768
   t.window.highdpi = false
-  t.window.fullscreen = true         -- Enable fullscreen (boolean)
+  t.window.fullscreen = false         -- Enable fullscreen (boolean)
     
   t.window.title = "Spatial Vessel"
   
