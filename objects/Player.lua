@@ -6,6 +6,7 @@ Player.y = 500
 Player.w = 64
 Player.h = 64
 Player.a = 0 -- orientation
+Player.target_a = 0 -- orientation des tirs
 
 -- bullets configuration
 Player.tab_bullets = {}
@@ -40,7 +41,7 @@ function Player.shoot()
       x = Player.x,
       y = Player.y,
       speed = Player.speed_shoot,
-      a = Player.a
+      a = Player.target_a
 
     })
 
@@ -50,9 +51,6 @@ end
 ---------------------------------------------------
 
 function Player.draw()
-
-  
-
 
   for i,b in pairs(Player.tab_bullets) do
 
@@ -101,16 +99,16 @@ function Player.update(dt)
   -- Acquisition déplacement zqsd
   local direction_x = 0
   local direction_y = 0
-  if love.keyboard.isDown("z") then
+  if love.keyboard.isDown("z") then --UP
     direction_y = -1
   end
-  if love.keyboard.isDown("q") then
+  if love.keyboard.isDown("q") then -- LEFT
     direction_x = -1
   end
-  if love.keyboard.isDown("s") then
+  if love.keyboard.isDown("s") then -- DOWN
     direction_y = 1
   end
-  if love.keyboard.isDown("d") then
+  if love.keyboard.isDown("d") then -- RIGHT
     direction_x = 1
   end
 
@@ -119,16 +117,54 @@ function Player.update(dt)
   Player.x = (Player.x + (3 * direction_x  ))  % love.graphics.getWidth()
   Player.y = (Player.y + (3 * direction_y ))   % love.graphics.getHeight()
 
-  -- orientation
+  -- orientation des tirs (vers souris)
   local dx = Player.x - love.mouse.getX()
   local dy = Player.y - love.mouse.getY()
 
   if Player.y > love.mouse.getY() then
-    Player.a = -math.atan(dx/dy)
+    Player.target_a = -math.atan(dx/dy)
   end
   if Player.y < love.mouse.getY() then
-    Player.a = math.pi-math.atan(dx/dy)
+    Player.target_a = math.pi-math.atan(dx/dy)
   end
+
+  -- Orientation du vaisseau
+  if direction_x == 1 then
+    if direction_y == 0 then
+      Player.a = math.pi / 2
+    end
+    if direction_y == 1 then
+      Player.a = 3 * math.pi / 4
+    end
+    if direction_y == -1 then
+      Player.a = math.pi / 4
+    end
+  end
+
+  if direction_x == -1 then
+    if direction_y == 0 then
+      Player.a = -math.pi / 2
+    end
+    if direction_y == 1 then
+      Player.a = - 3 * math.pi / 4
+    end
+    if direction_y == -1 then
+      Player.a = - math.pi / 4
+    end
+  end
+
+  if direction_x == 0 then
+    if direction_y == 0 then
+      Player.a = 0
+    end
+    if direction_y == 1 then
+      Player.a = math.pi
+    end
+    if direction_y == -1 then
+      Player.a = 0
+    end
+  end
+
 
   -- click gauche - shoot
   if love.mouse.isDown(1) then

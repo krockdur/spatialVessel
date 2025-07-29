@@ -34,6 +34,7 @@ end
 
 function Game.update(dt)
 
+  background.update(dt)
   player.update(dt)
   enemies.update(dt)
   Game.update_collision(dt)
