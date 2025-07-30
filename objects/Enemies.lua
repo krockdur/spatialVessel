@@ -11,9 +11,9 @@ Enemies.tab_bullets = {}
 Enemies.sprite_w = 64
 Enemies.sprite_h = 64
 
-Enemies.shoot_interval = 2 -- en secondes
-Enemies.shoot_speed = 200
-Enemies.speed = 80
+Enemies.shoot_interval = 0.2 -- en secondes
+Enemies.shoot_speed = 400
+Enemies.speed = 300
 
 -- pattern d'apparition des ennemies
 -- number           => nombre d'ennemies dans la vague

@@ -7,11 +7,12 @@ Player.w = 64
 Player.h = 64
 Player.a = 0 -- orientation
 Player.target_a = 0 -- orientation des tirs
+Player.speed = 5
 
 -- bullets configuration
 Player.tab_bullets = {}
-Player.interval_shoot = 0.15 --0.5 secondes
-Player.speed_shoot = 1500
+Player.interval_shoot = 0.1 --0.5 secondes
+Player.speed_shoot = 2500
 Player.sprite_bullet_w = 32
 Player.sprite_bullet_h = 32
 
@@ -64,11 +65,11 @@ function Player.draw()
 
   --
   -- print debug
-  love.graphics.print("getWidth: "..tostring(love.graphics.getWidth()), 10, 30)
-  love.graphics.print("getHeight: "..tostring(love.graphics.getHeight()), 10, 50)
+  --love.graphics.print("getWidth: "..tostring(love.graphics.getWidth()), 10, 30)
+  --love.graphics.print("getHeight: "..tostring(love.graphics.getHeight()), 10, 50)
 
-  love.graphics.print("x: "..tostring(Player.x), 10, 70)
-  love.graphics.print("y: "..tostring(Player.y), 10, 90)
+  --love.graphics.print("x: "..tostring(Player.x), 10, 70)
+  --love.graphics.print("y: "..tostring(Player.y), 10, 90)
 end
 
 ---------------------------------------------------
@@ -99,10 +100,10 @@ function Player.update(dt)
   -- Acquisition déplacement zqsd
   local direction_x = 0
   local direction_y = 0
-  if love.keyboard.isDown("z") then --UP
+  if love.keyboard.isDown("z") or love.keyboard.isDown("w") then --UP
     direction_y = -1
   end
-  if love.keyboard.isDown("q") then -- LEFT
+  if love.keyboard.isDown("q") or love.keyboard.isDown("a") then -- LEFT
     direction_x = -1
   end
   if love.keyboard.isDown("s") then -- DOWN
@@ -114,8 +115,8 @@ function Player.update(dt)
 
   -- déplacement
   
-  Player.x = (Player.x + (3 * direction_x  ))  % love.graphics.getWidth()
-  Player.y = (Player.y + (3 * direction_y ))   % love.graphics.getHeight()
+  Player.x = (Player.x + (Player.speed * direction_x  ))  % love.graphics.getWidth()
+  Player.y = (Player.y + (Player.speed * direction_y ))   % love.graphics.getHeight()
 
   -- orientation des tirs (vers souris)
   local dx = Player.x - love.mouse.getX()
