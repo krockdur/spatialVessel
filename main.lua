@@ -82,7 +82,7 @@ function love.update(dt)
 
     stack_dt = stack_dt - 1/limit_fps
 
-    screenManager.update(dt)
+    screenManager.update(1/limit_fps)
 
     count_frame = count_frame + 1
 
