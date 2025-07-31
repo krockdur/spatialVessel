@@ -5,11 +5,13 @@ Player.x = 400
 Player.y = 500
 Player.w = 64
 Player.h = 64
-Player.a = 0 -- orientation
-Player.target_a = 0 -- orientation des tirs
-Player.speed = 5
+Player.a = 0            -- Angle du joueur (rad)
+Player.target_a = 0     -- Angle des tirs (rad): vers le curseur de la souris
+Player.speed = 5  
+Player.score = 0
 
 -- bullets configuration
+Player.weapon_type = 1
 Player.tab_bullets = {}
 Player.interval_shoot = 0.1 --0.5 secondes
 Player.speed_shoot = 2500

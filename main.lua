@@ -18,10 +18,10 @@ local screenManager = require('screen.ScreenManager')
 
 local gameIsPaused = false
 
+local limit_fps = 60
 
-local test_fps = 0
 local test_delta_fps = 0
-local count_frame = 0
+
 
 local show_dt = 0
 local tmp_dt = 0
@@ -34,40 +34,29 @@ function love.load()
   screenManager.load()
 end
 
+
 local delta_fps
 -- on dessine la vue
 function love.draw()
   screenManager.draw()
+  
   love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
-
   love.graphics.print("Game FPS: "..tostring(test_delta_fps), 10, 40)
 end
 
 
 
 -- Boucle
-
-local tmp_timer = 0
-local tmp_timer_2 = 0
-
-local limit_fps = 60
 local stack_dt = 0
+local test_fps = 0
+local count_frame = 0
 
 function love.update(dt)
-
-  show_dt = dt
-
-  tmp_timer_2 = tmp_timer
-  tmp_timer = love.timer.getTime()
-  tmp_dt = tmp_timer - tmp_timer_2
-
-  print "-------------"
-  print("dt          : " ..tostring(dt))
-  print("tmp_dt      : " ..tostring(tmp_dt))
   
   -- Mise en pause en fonction du focus
   if gameIsPaused then return end
 
+  -- Comptage nombre d'appel par seconde de screenManager.update
   test_fps = test_fps + dt
   if test_fps >= 1 then
     test_fps = test_fps - 1
@@ -75,8 +64,7 @@ function love.update(dt)
     count_frame = 0
   end
   
-
-
+  -- Appel de screenManager.update 60 fois par seconde
   stack_dt = stack_dt + dt
   if stack_dt >= 1/limit_fps then
 
@@ -87,13 +75,6 @@ function love.update(dt)
     count_frame = count_frame + 1
 
   end
-
-  --delta_fps = love.timer.getDelta()
-
-  
-
-
-
 
 end
 

@@ -18,7 +18,6 @@ local sprite_explosion_3
 function Game.load()
 
   sound_touch_1 = love.audio.newSource("assets/sounds/touch1.wav", "static")
-
   sprite_explosion_1 = love.graphics.newImage("assets/explosion1.png")
   sprite_explosion_2 = love.graphics.newImage("assets/explosion2.png")
   sprite_explosion_3 = love.graphics.newImage("assets/explosion3.png")
