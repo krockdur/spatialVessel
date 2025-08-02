@@ -13,7 +13,7 @@ Enemies.sprite_h = 64
 
 Enemies.shoot_interval = 0.2 -- en secondes
 Enemies.shoot_speed = 400
-Enemies.speed = 300
+Enemies.speed = 150
 
 -- pattern d'apparition des ennemies
 -- number           => nombre d'ennemies dans la vague
@@ -26,10 +26,16 @@ Enemies.pattern = {
     number=1, period=2, type=1, pv=1, pattern_move=1, fire=1
   },
   {
-    number=2, period=1, type=2, pv=2, pattern_move=1, fire=0
+    number=4, period=1, type=2, pv=2, pattern_move=1, fire=0
   },
   {
-    number=5, period=1, type=2, pv=1, pattern_move=3, fire=1
+    number=2, period=1, type=2, pv=1, pattern_move=3, fire=1
+  },
+  {
+    number=3, period=1, type=1, pv=1, pattern_move=3, fire=1
+  },
+  {
+    number=2, period=1, type=2, pv=1, pattern_move=3, fire=0
   }
 }
 
