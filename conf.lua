@@ -29,5 +29,7 @@ function love.conf(t)
   t.window.vsync = 1 
     
   t.window.title = "Spatial Vessel"
+
+  t.console = true
   
 end

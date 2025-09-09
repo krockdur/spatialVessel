@@ -82,7 +82,7 @@ function Player.update(dt)
 
   -- debug
   
-  print(Player.tab_bullets[1])
+  -- print(Player.tab_bullets[1])
 
   -- bullets
   for i,b in pairs(Player.tab_bullets) do

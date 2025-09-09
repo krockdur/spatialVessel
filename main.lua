@@ -102,6 +102,12 @@ function love.mousemoved(x, y, dx, dy, istouch)
   
 end
 
+function love.joystickadded( pad )
+  if pad:isGamepad() then
+    print ("GamePad added")
+  end
+end
+
 
 -- function love.focus(f) gameIsPaused = not f end
 function love.focus(f)
