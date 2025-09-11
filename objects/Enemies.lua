@@ -21,21 +21,23 @@ Enemies.speed = 150
 -- type             => type de l'enemie. sprite_enemy_x => type=x
 -- pv               => pv par enemie de la vague
 -- pattern_move     => type de déplacement. 1=>y+ 2=>x+y+ 3=>x-y+
+-- fire
+-- points           => Nombre de points gagné quand pv arrive a 0
 Enemies.pattern = {
   {
-    number=1, period=2, type=1, pv=1, pattern_move=1, fire=1
+    number=1, period=2, type=1, pv=1, pattern_move=1, fire=1, points=1
   },
   {
-    number=4, period=1, type=2, pv=2, pattern_move=1, fire=0
+    number=4, period=1, type=2, pv=2, pattern_move=1, fire=0, points=2
   },
   {
-    number=2, period=1, type=2, pv=1, pattern_move=3, fire=1
+    number=2, period=1, type=2, pv=3, pattern_move=3, fire=1, points=3
   },
   {
-    number=3, period=1, type=1, pv=1, pattern_move=3, fire=1
+    number=3, period=1, type=1, pv=1, pattern_move=3, fire=1, points=1
   },
   {
-    number=2, period=1, type=2, pv=1, pattern_move=3, fire=0
+    number=2, period=1, type=2, pv=2, pattern_move=3, fire=0, points=2
   }
 }
 
@@ -183,6 +185,7 @@ function Enemies.create_from_pattern(dt)
     local pv_enemies = Enemies.pattern[indice_vague].pv
     local pattern_move = Enemies.pattern[indice_vague].pattern_move
     local type_fire = Enemies.pattern[indice_vague].fire
+    local points = Enemies.pattern[indice_vague].points
     -- calcul écart des énemies
     local nb_ecarts = nb_enemies + 1
     local ecart_pixel = (love.graphics.getWidth() - (nb_enemies * 64)) / nb_ecarts
@@ -198,7 +201,8 @@ function Enemies.create_from_pattern(dt)
         pv = pv_enemies,
         type = type_enemies,
         pattern_move = pattern_move,
-        type_fire = type_fire
+        type_fire = type_fire,
+        points = points
       })
 
     end

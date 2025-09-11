@@ -40,8 +40,8 @@ local delta_fps
 function love.draw()
   screenManager.draw()
   
-  love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
-  love.graphics.print("Game FPS: "..tostring(test_delta_fps), 10, 40)
+  -- love.graphics.print("Current FPS: "..tostring(love.timer.getFPS()), 10, 10)
+  -- love.graphics.print("Game FPS: "..tostring(test_delta_fps), 10, 40)
 end
 
 
@@ -96,17 +96,29 @@ function love.keyreleased(key)
   screenManager.keyreleased(key)
 end
 
-function love.mousemoved(x, y, dx, dy, istouch)
-  
-  screenManager.mousemoved(x, y, dx, dy, istouch)
-  
+function love.mousemoved(x, y, dx, dy, istouch)  
+  screenManager.mousemoved(x, y, dx, dy, istouch)  
 end
+
+function  love.touchpressed( id, x, y, dx, dy, pressure )
+  screenManager.touchpressed( id, x, y, dx, dy, pressure )
+end
+
+function love.touchmoved( id, x, y, dx, dy, pressure )
+  screenManager.touchmoved( id, x, y, dx, dy, pressure )
+end
+
+function love.touchreleased( id, x, y, dx, dy, pressure )
+  screenManager.touchreleased( id, x, y, dx, dy, pressure )
+end
+
 
 function love.joystickadded( pad )
   if pad:isGamepad() then
     print ("GamePad added")
   end
 end
+
 
 
 -- function love.focus(f) gameIsPaused = not f end

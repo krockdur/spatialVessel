@@ -24,6 +24,12 @@ local sprite_bullet_1
 local sound_shoot_1
 
 
+--
+local touch_left = false
+local touch_right = false
+local touch_up = false
+local touch_down = false
+
 
 ---------------------------------------------------
 
@@ -102,18 +108,39 @@ function Player.update(dt)
   -- Acquisition déplacement zqsd
   local direction_x = 0
   local direction_y = 0
-  if love.keyboard.isDown("z") or love.keyboard.isDown("w") then --UP
+  if love.keyboard.isDown("z") or love.keyboard.isDown("w") or touch_up then --UP
     direction_y = -1
   end
-  if love.keyboard.isDown("q") or love.keyboard.isDown("a") then -- LEFT
+  if love.keyboard.isDown("q") or love.keyboard.isDown("a") or touch_left then -- LEFT
     direction_x = -1
   end
-  if love.keyboard.isDown("s") then -- DOWN
+  if love.keyboard.isDown("s") or touch_down then -- DOWN
     direction_y = 1
   end
-  if love.keyboard.isDown("d") then -- RIGHT
+  if love.keyboard.isDown("d") or touch_right then -- RIGHT
     direction_x = 1
   end
+
+  if touch_left and touch_up then
+    direction_y = -1
+    direction_x = -1
+  end
+
+  if touch_up and touch_right then
+    direction_y = -1
+    direction_x = 1
+  end
+
+  if touch_right and touch_down then
+    direction_y = 1
+    direction_x = 1
+  end
+
+  if touch_down and touch_left then
+    direction_y = 1
+    direction_x = -1
+  end
+
 
   -- déplacement
   
@@ -202,6 +229,74 @@ function Player.mousepressed(x, y, button, istouch)
 
 end
 
+---------------------------------------------------
+function Player.touchmoved( id, x, y, dx, dy, pressure )
+
+  if dx < 0 then
+    touch_left = true
+    touch_right = false
+    touch_up = false
+    touch_down = false
+  end
+  if dx > 0 then
+    touch_left = false
+    touch_right = true
+    touch_up = false
+    touch_down = false
+  end
+  if dy < 0 then
+    touch_left = false
+    touch_right = false
+    touch_up = true
+    touch_down = false
+  end
+  if dy > 0 then
+    touch_left = false
+    touch_right = false
+    touch_up = false
+    touch_down = true
+  end
+
+  if dy < 0 and dx < 0 then
+    touch_left = true
+    touch_right = false
+    touch_up = true
+    touch_down = false
+  end
+
+  if dy < 0 and dx > 0 then
+    touch_left = false
+    touch_right = true
+    touch_up = true
+    touch_down = false
+  end
+
+  if dy > 0 and dx < 0 then
+    touch_left = true
+    touch_right = false
+    touch_up = false
+    touch_down = true
+  end
+
+  if dy > 0 and dx > 0 then
+    touch_left = false
+    touch_right = true
+    touch_up = false
+    touch_down = true
+  end
+  
+end
+
+---------------------------------------------------
+
+function Player.touchreleased( id, x, y, dx, dy, pressure )
+    touch_left = false
+    touch_right = false
+    touch_up = false
+    touch_down = false
+end
+
+---------------------------------------------------
 return Player
 
 ---------------------------------------------------

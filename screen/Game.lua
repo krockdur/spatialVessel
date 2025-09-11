@@ -13,6 +13,12 @@ local sprite_explosion_1
 local sprite_explosion_2
 local sprite_explosion_3
 
+
+Game.score = 0
+function Game.calculate_score(value)
+  Game.score = Game.score + value
+  ui.score = Game.score
+end
 -----------------------------------------------------------------------
 
 function Game.load()
@@ -99,7 +105,11 @@ function Game.update_collision(dt)
             Game.add_anim_explosion(e.x, e.y)
   
             if e.pv <= 0 then
+
+              Game.calculate_score(e.points)
+
               table.remove(enemies.list, j)
+              
             end
             table.remove(player.tab_bullets, i)
             break
@@ -170,6 +180,23 @@ function Game.mousepressed(x, y, button, istouch)
   
 end
 
+-----------------------------------------------------------------------
+function Game.touchpressed( id, x, y, dx, dy, pressure )
+  if (x < love.graphics.getWidth() / 2) then
+
+  end
+  ui.touchpressed( id, x, y, dx, dy, pressure )
+end
+
+-----------------------------------------------------------------------
+function Game.touchmoved( id, x, y, dx, dy, pressure )
+  player.touchmoved( id, x, y, dx, dy, pressure )
+end
+
+function Game.touchreleased( id, x, y, dx, dy, pressure )
+  player.touchreleased( id, x, y, dx, dy, pressure )
+  ui.touchreleased( id, x, y, dx, dy, pressure )
+end
 -----------------------------------------------------------------------
 
 -- generate random number from 1 -> 6
